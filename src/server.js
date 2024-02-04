@@ -5,21 +5,26 @@ const PORT = 3003;
 const HOST = "::";
 const PREFIX = 'api'
 
-export default async function () {
-    const config = {
-      port: PORT,
-      host: HOST,
-      prefix: PREFIX,
-    };
-
+export async function buildApp(config) {
+  
   const fastify = Fastify({
     prefix: config.prefix,
     logger: true
   });
-
+  
   registerPlugins(fastify, config);
-
-  await fastify.listen(PORT, HOST);
-
+  
+  
   return fastify;
+}
+
+export default async function () {
+  const config = {
+    port: PORT,
+    host: HOST,
+    prefix: PREFIX,
+  };
+  const app = await buildApp(config)
+  
+  await app.listen(PORT, HOST);
 }
